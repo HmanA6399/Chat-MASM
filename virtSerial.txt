@@ -1,0 +1,2 @@
+dosbox -c "serial1 = directserial realport:COM1" -c "mount c c:/users/hmana6399/desktop/chatlab" -c "c:"
+dosbox -c "serial1 = directserial realport:COM2" -c "mount c c:/users/hmana6399/desktop/chatlab" -c "c:"

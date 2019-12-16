@@ -15,6 +15,11 @@ SETCURSOR MACRO X,Y
     INT 10H
 ENDM SETCURSOR
 
+CHECKKEY MACRO
+    MOV AH,01H
+    INT 16H
+ENDM CHECKKEY
+
 ; GETKEY - Get key pressed (Wait for a key-AH:scancode,AL:ASCII) 
 GETKEY MACRO 
     MOV AH,0
@@ -83,7 +88,7 @@ HALT MACRO
     INT 21H
 ENDM HALT
 
-; SCROLL: Scroll no of lines in a specific window
+; SCROLL: Scroll up no of lines in a specific window
 ; Params:   NLINES - no. of lines
 ;           X1 - x of upper left corner
 ;           Y1 - y of upper left corner
@@ -101,6 +106,25 @@ SCROLL MACRO NLINES,X1,Y1,X2,Y2
     INT 10H
 ENDM SCROLL
 
+; SCROLLDOWN: Scroll down no of lines in a specific window
+; Params:   NLINES - no. of lines
+;           X1 - x of upper left corner
+;           Y1 - y of upper left corner
+;           X2 - x of lower right corner
+;           Y2 - y of lower right corner
+; USES : AX,BX,CX,DX
+SCROLLDOWN MACRO NLINES,X1,Y1,X2,Y2 
+    MOV AH,07H
+    MOV AL,NLINES
+    MOV BH,07H  ; Normal video attribute
+    MOV CH,Y1
+    MOV CL,X1
+    MOV DH,Y2
+    MOV DL,X2
+    INT 10H
+ENDM SCROLLDOWN
+
+
 SCROLLUP1 MACRO
     SCROLL 1,0,0,79D,12D
 ENDM SCROLLUP1
@@ -108,7 +132,16 @@ ENDM SCROLLUP1
 SCROLLUP2 MACRO
     SCROLL 1,0,14D,79D,24D
 ENDM SCROLLUP2
-    
+
+SCROLLDOWN1 MACRO
+    SCROLLDOWN 1,0,0,79D,12D
+ENDM SCROLLDOWN1
+
+SCROLLDOWN2 MACRO
+    SCROLLDOWN 1,0,14D,79D,24D
+ENDM SCROLLDOWN2
+
+
 CLRS MACRO
     MOV AX,0600H
     MOV BH,07H
